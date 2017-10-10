@@ -1,0 +1,18 @@
+# - Config file for the Darknet package
+# It defines the following variables
+#  DARKNET_INCLUDE_DIRS - include directories for Darknet
+#  DARKNET_LIBRARIES    - libraries to link against
+#  DARKNET_LIBRARY_DIRS - library directories
+#  DARKNET_EXECUTABLE   - the bar executable
+
+# Compute paths
+get_filename_component(DARKNET_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(DARKNET_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+set(DARKNET_LIBRARY_DIRS "@CONF_LIBRARY_DIRS@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+include("${DARKNET_CMAKE_DIR}/DarknetTargets.cmake")
+
+# These are IMPORTED targets created by DarknetTargets.cmake
+set(DARKNET_LIBRARIES "@CONF_LIBNAME@")
+set(DARKNET_EXECUTABLE examples)
