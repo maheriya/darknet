@@ -1,73 +1,58 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 project(darknet LANGUAGES C CXX CUDA)
 
-## Version and paths
+## Version
 set(DARKNET_MAJOR_VERSION 2)
 set(DARKNET_MINOR_VERSION 0)
-set(DARKNET_PATCH_VERSION 1)
+set(DARKNET_PATCH_VERSION 0)
 set(DARKNET_VERSION ${DARKNET_MAJOR_VERSION}.${DARKNET_MINOR_VERSION}.${DARKNET_PATCH_VERSION})
+include(cmake/ConfDirs.cmake)
 
 
 ## Global configuration of features
-set (EN_OPENCV 1)
-set (EN_OPENMP 1)
+set (EN_OPENCV ON)
+set (EN_OPENMP ON)
+set (EN_CUDNN  ON)
  
-# Offer the user the choice of overriding the installation directories
-set(INSTALL_LIB_DIR     lib     CACHE PATH "Installation directory for libraries")
-set(INSTALL_BIN_DIR     bin     CACHE PATH "Installation directory for executables")
-set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
-set(DEF_INSTALL_CMAKE_DIR lib/CMake/Darknet)
-set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
- 
-# Make relative paths absolute (needed later on)
-foreach(p LIB BIN INCLUDE CMAKE)
-  set(var INSTALL_${p}_DIR)
-  if(NOT IS_ABSOLUTE "${${var}}")
-    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
-  endif()
-endforeach()
+## C flags
+set(CFLGS  "-Wall -Wno-unknown-pragmas -Wfatal-errors")
 
-## CUDA Stuff
-set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -gencode arch=compute_61,code=sm_61")
-set(COMMON  "${COMMON} -DGPU -I/usr/local/cuda/include")
-set(CFLAGS  "${CFLAGS} -DGPU")
-##set(LDFLAGS "${LDFLAGS} -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand -lstdc++")
+## CUDA (cmake 3.8 onwards CUDA is implicitly available; however, using find_package allows more flexibility)
+find_package(CUDA 8.0 REQUIRED)
+CUDA_SELECT_NVCC_ARCH_FLAGS(ARCH_FLAGS 6.1 6.2)
+LIST(APPEND CUDA_NVCC_FLAGS ${ARCH_FLAGS})
+set(CUDA_PROPAGATE_HOST_FLAGS ON)
+set(CFLGS  "${CFLGS} -DGPU")
 if (EN_CUDNN)
-  message("==== CUDNN is enabled")
-  set(COMMON  "${COMMON} -DCUDNN")
-  set(CFLAGS  "${CFLAGS} -DCUDNN")
-  set(LDFLAGS "${LDFLAGS} -lcudnn")
+  set(CFLGS  "${CFLGS} -DCUDNN")
+  set(LIBFLAGS "-L${CUDA_TOOLKIT_ROOT_DIR}/lib64 -lcudnn")
 endif()
 
- 
+## OpenCV
 if (EN_OPENCV)
- # Find OpenCV
- find_package( OpenCV 2.4 REQUIRED ) # not requiring EXACT sub-version
+ find_package(OpenCV 2.4 REQUIRED)
  include_directories (${OpenCV_INCLUDE_DIRS})
  set(OPENCV_LIBS ${OpenCV_LIBS})
- set(COMMON "${COMMON} -DOPENCV")
- set(CFLAGS "${CFLAGS} -DOPENCV")
+ set(CFLGS "${CFLGS} -DOPENCV")
 endif()
 
-
+## OpenMP
 if (EN_OPENMP)
-  set(CFLAGS "${CFLAGS} -fopenmp" )
+  set(CFLGS "${CFLGS} -fopenmp" )
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CFLAGS} -std=c++11" )
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON} ${CFLAGS}" )
-set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} ${COMMON} --compiler-options '${CFLAGS}'")
-message("CMAKE_CUDA_FLAGS = ${CMAKE_CUDA_FLAGS}")
+## Final C and CXX flags
+set(CMAKE_CXX_FLAGS  "${CFLGS} -std=c++11" )
+set(CMAKE_C_FLAGS    "${CFLGS}" )
+##message("CUDA_TOOLKIT_ROOT_DIR: ${CUDA_TOOLKIT_ROOT_DIR}")
+##message("CUDA_NVCC_FLAGS      : ${CUDA_NVCC_FLAGS}")
+##message("CMAKE_C_FLAGS        : ${CMAKE_C_FLAGS}")
+##message("CMAKE_CXX_FLAGS      : ${CMAKE_CXX_FLAGS}")
 
 # set up include-directories
 include_directories(include src "${PROJECT_BINARY_DIR}")
  
-#Set CXX standard
-##--ADD_DEFINITIONS(
-##--      -std=c++11
-##--)
-
-set(LIBNAME ${PROJECT_NAME})
+## Library name (used for building the lib and linking the examples)
 # Add sub-directories
 add_subdirectory(${PROJECT_NAME})
 add_subdirectory(examples)

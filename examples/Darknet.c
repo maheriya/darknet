@@ -265,12 +265,12 @@ layer normalize_layer(layer l, int n)
 {
     int j;
     l.batch_normalize=1;
-    l.scales = calloc(n, sizeof(float));
+    l.scales = (float*)calloc(n, sizeof(float));
     for(j = 0; j < n; ++j){
         l.scales[j] = 1;
     }
-    l.rolling_mean = calloc(n, sizeof(float));
-    l.rolling_variance = calloc(n, sizeof(float));
+    l.rolling_mean = (float*)calloc(n, sizeof(float));
+    l.rolling_variance = (float*)calloc(n, sizeof(float));
     return l;
 }
 
@@ -420,8 +420,8 @@ int main(int argc, char **argv)
         fprintf(stderr, "usage: %s <function>\n", argv[0]);
         return 0;
     }
-    gpu_index = find_int_arg(argc, argv, "-i", 0);
-    if(find_arg(argc, argv, "-nogpu")) {
+    gpu_index = find_int_arg(argc, argv, (char*)"-i", 0);
+    if(find_arg(argc, argv, (char*)"-nogpu")) {
         gpu_index = -1;
     }
 
@@ -446,11 +446,11 @@ int main(int argc, char **argv)
     } else if (0 == strcmp(argv[1], "detector")){
         run_detector(argc, argv);
     } else if (0 == strcmp(argv[1], "detect")){
-        float thresh = find_float_arg(argc, argv, "-thresh", .24);
+        float thresh = find_float_arg(argc, argv, (char*)"-thresh", .24);
         char *filename = (argc > 4) ? argv[4]: 0;
-        char *outfile = find_char_arg(argc, argv, "-out", 0);
-        int fullscreen = find_arg(argc, argv, "-fullscreen");
-        test_detector("cfg/coco.data", argv[2], argv[3], filename, thresh, .5, outfile, fullscreen);
+        char *outfile = find_char_arg(argc, argv, (char*)"-out", 0);
+        int fullscreen = find_arg(argc, argv, (char*)"-fullscreen");
+        test_detector((char*)"cfg/coco.data", argv[2], argv[3], filename, thresh, .5, outfile, fullscreen);
     } else if (0 == strcmp(argv[1], "cifar")){
         run_cifar(argc, argv);
     } else if (0 == strcmp(argv[1], "go")){
@@ -462,7 +462,7 @@ int main(int argc, char **argv)
     } else if (0 == strcmp(argv[1], "coco")){
         run_coco(argc, argv);
     } else if (0 == strcmp(argv[1], "classify")){
-        predict_classifier("cfg/imagenet1k.data", argv[2], argv[3], argv[4], 5);
+        predict_classifier((char*)"cfg/imagenet1k.data", argv[2], argv[3], argv[4], 5);
     } else if (0 == strcmp(argv[1], "classifier")){
         run_classifier(argc, argv);
     } else if (0 == strcmp(argv[1], "regressor")){

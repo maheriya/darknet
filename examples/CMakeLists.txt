@@ -1,23 +1,16 @@
+# Setup compilation of the Darknet executable using the lib
 #
-#
-#
-file(GLOB EXAMPLES     "*.c")
+file(GLOB SRC "*.c")
 
- 
+CUDA_ADD_EXECUTABLE(Darknet ${SRC})
+target_link_libraries(Darknet
+  ${PROJECT_NAME}
+  ${OPENCV_LIBS}
+  ${CUDA_LIBRARIES} ${CUDA_curand_LIBRARY} ${CUDA_CUBLAS_LIBRARIES}
+  ${LIBFLAGS})
 
-
-foreach (example_src ${EXAMPLES})
-    get_filename_component(example_name ${example_src} NAME_WE)
-
-    #cuda_add_executable(${example_name} ${example_src})
-    add_executable(${example_name} ${example_src})
-    set_property(TARGET ${example_name} PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-    target_link_libraries(${example_name} PRIVATE ${LIBNAME})
-
- 
-    install(TARGETS ${example_name}
-        # IMPORTANT: Add the ${example_name} executable to the "export-set"
-        EXPORT DarknetTargets
-        RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
-endforeach()
+install(TARGETS Darknet
+    # IMPORTANT: Add the Darknet executable to the "export-set"
+    EXPORT DarknetTargets
+    RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
 

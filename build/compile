@@ -1,6 +1,12 @@
 #!/bin/csh -f
 ./clean
 
+alias chkst 'if ($status != 0) then \
+  echo "Failure!"; \
+  exit(1); \
+endif'
+
+
 ## Hack for compiling on Jetson TX1 with new opencv (after JetPack 3.0)
 set archi=`uname -i`
 if ( x"$archi" == x"aarch64" ) then
@@ -9,11 +15,22 @@ else
   set extraopts = ( )
 endif
 
+CMAKE:
 set cmd = ( cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/darknet "$extraopts" .. )
 echo $cmd
 $cmd
-if ( $status != 0 ) then
-  echo "Error while running cmake!"
-  exit(1)
-endif
-#make -j4
+chkst
+
+MAKE:
+make -j4
+chkst
+
+
+INSTALL:
+##--sudo make install
+sudo checkinstall --nodoc --strip=yes --backup=no \
+        --fstrans=no \
+        --default \
+        --pkgname=darknet \
+
+
