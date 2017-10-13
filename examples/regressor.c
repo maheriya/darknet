@@ -32,12 +32,12 @@ void train_regressor(char *datacfg, char *cfgfile, char *weightfile, int *gpus, 
     int imgs = net.batch * net.subdivisions * ngpus;
 
     printf("Learning Rate: %g, Momentum: %g, Decay: %g\n", net.learning_rate, net.momentum, net.decay);
-    list *options = read_data_cfg(datacfg);
+    mlist *options = read_data_cfg(datacfg);
 
     char *backup_directory = option_find_str(options, "backup", "/backup/");
     char *train_list = option_find_str(options, "train", "data/train.list");
 
-    list *plist = get_paths(train_list);
+    mlist *plist = get_paths(train_list);
     char **paths = (char **)list_to_array(plist);
     printf("%d\n", plist->size);
     int N = plist->size;

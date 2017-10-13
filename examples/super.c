@@ -19,7 +19,7 @@ void train_super(char *cfgfile, char *weightfile, int clear)
     data train, buffer;
 
 
-    list *plist = get_paths(train_images);
+    mlist *plist = get_paths(train_images);
     //int N = plist->size;
     char **paths = (char **)list_to_array(plist);
 

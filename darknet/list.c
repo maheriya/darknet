@@ -2,9 +2,9 @@
 #include <string.h>
 #include "list.h"
 
-list *make_list()
+mlist *make_list()
 {
-	list *l = malloc(sizeof(list));
+	mlist *l = malloc(sizeof(mlist));
 	l->size = 0;
 	l->front = 0;
 	l->back = 0;
@@ -12,7 +12,7 @@ list *make_list()
 }
 
 /*
-void transfer_node(list *s, list *d, node *n)
+void transfer_node(mlist *s, mlist *d, node *n)
 {
     node *prev, *next;
     prev = n->prev;
@@ -25,7 +25,7 @@ void transfer_node(list *s, list *d, node *n)
 }
 */
 
-void *list_pop(list *l){
+void *list_pop(mlist *l){
     if(!l->back) return 0;
     node *b = l->back;
     void *val = b->val;
@@ -37,7 +37,7 @@ void *list_pop(list *l){
     return val;
 }
 
-void list_insert(list *l, void *val)
+void list_insert(mlist *l, void *val)
 {
 	node *new = malloc(sizeof(node));
 	new->val = val;
@@ -64,13 +64,13 @@ void free_node(node *n)
 	}
 }
 
-void free_list(list *l)
+void free_list(mlist *l)
 {
 	free_node(l->front);
 	free(l);
 }
 
-void free_list_contents(list *l)
+void free_list_contents(mlist *l)
 {
 	node *n = l->front;
 	while(n){
@@ -79,7 +79,7 @@ void free_list_contents(list *l)
 	}
 }
 
-void **list_to_array(list *l)
+void **list_to_array(mlist *l)
 {
     void **a = calloc(l->size, sizeof(void*));
     int count = 0;

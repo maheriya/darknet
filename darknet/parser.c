@@ -34,10 +34,10 @@
 
 typedef struct{
     char *type;
-    list *options;
+    mlist *options;
 }section;
 
-list *read_cfg(char *filename);
+mlist *read_cfg(char *filename);
 
 LAYER_TYPE string_to_layer_type(char * type)
 {
@@ -119,7 +119,7 @@ typedef struct size_params{
     network net;
 } size_params;
 
-local_layer parse_local(list *options, size_params params)
+local_layer parse_local(mlist *options, size_params params)
 {
     int n = option_find_int(options, "filters",1);
     int size = option_find_int(options, "size",1);
@@ -140,7 +140,7 @@ local_layer parse_local(list *options, size_params params)
     return layer;
 }
 
-layer parse_deconvolutional(list *options, size_params params)
+layer parse_deconvolutional(mlist *options, size_params params)
 {
     int n = option_find_int(options, "filters",1);
     int size = option_find_int(options, "size",1);
@@ -166,7 +166,7 @@ layer parse_deconvolutional(list *options, size_params params)
 }
 
 
-convolutional_layer parse_convolutional(list *options, size_params params)
+convolutional_layer parse_convolutional(mlist *options, size_params params)
 {
     int n = option_find_int(options, "filters",1);
     int size = option_find_int(options, "size",1);
@@ -196,7 +196,7 @@ convolutional_layer parse_convolutional(list *options, size_params params)
     return layer;
 }
 
-layer parse_crnn(list *options, size_params params)
+layer parse_crnn(mlist *options, size_params params)
 {
     int output_filters = option_find_int(options, "output_filters",1);
     int hidden_filters = option_find_int(options, "hidden_filters",1);
@@ -211,7 +211,7 @@ layer parse_crnn(list *options, size_params params)
     return l;
 }
 
-layer parse_rnn(list *options, size_params params)
+layer parse_rnn(mlist *options, size_params params)
 {
     int output = option_find_int(options, "output",1);
     char *activation_s = option_find_str(options, "activation", "logistic");
@@ -225,7 +225,7 @@ layer parse_rnn(list *options, size_params params)
     return l;
 }
 
-layer parse_gru(list *options, size_params params)
+layer parse_gru(mlist *options, size_params params)
 {
     int output = option_find_int(options, "output",1);
     int batch_normalize = option_find_int_quiet(options, "batch_normalize", 0);
@@ -236,7 +236,7 @@ layer parse_gru(list *options, size_params params)
     return l;
 }
 
-layer parse_lstm(list *options, size_params params)
+layer parse_lstm(mlist *options, size_params params)
 {
     int output = option_find_int(options, "output", 1);
     int batch_normalize = option_find_int_quiet(options, "batch_normalize", 0);
@@ -246,7 +246,7 @@ layer parse_lstm(list *options, size_params params)
     return l;
 }
 
-layer parse_connected(list *options, size_params params)
+layer parse_connected(mlist *options, size_params params)
 {
     int output = option_find_int(options, "output",1);
     char *activation_s = option_find_str(options, "activation", "logistic");
@@ -257,7 +257,7 @@ layer parse_connected(list *options, size_params params)
     return l;
 }
 
-softmax_layer parse_softmax(list *options, size_params params)
+softmax_layer parse_softmax(mlist *options, size_params params)
 {
     int groups = option_find_int_quiet(options, "groups",1);
     softmax_layer layer = make_softmax_layer(params.batch, params.inputs, groups);
@@ -271,7 +271,7 @@ softmax_layer parse_softmax(list *options, size_params params)
     return layer;
 }
 
-layer parse_region(list *options, size_params params)
+layer parse_region(mlist *options, size_params params)
 {
     int coords = option_find_int(options, "coords", 4);
     int classes = option_find_int(options, "classes", 20);
@@ -322,7 +322,7 @@ layer parse_region(list *options, size_params params)
     }
     return l;
 }
-detection_layer parse_detection(list *options, size_params params)
+detection_layer parse_detection(mlist *options, size_params params)
 {
     int coords = option_find_int(options, "coords", 1);
     int classes = option_find_int(options, "classes", 1);
@@ -346,7 +346,7 @@ detection_layer parse_detection(list *options, size_params params)
     return layer;
 }
 
-cost_layer parse_cost(list *options, size_params params)
+cost_layer parse_cost(mlist *options, size_params params)
 {
     char *type_s = option_find_str(options, "type", "sse");
     COST_TYPE type = get_cost_type(type_s);
@@ -358,7 +358,7 @@ cost_layer parse_cost(list *options, size_params params)
     return layer;
 }
 
-crop_layer parse_crop(list *options, size_params params)
+crop_layer parse_crop(mlist *options, size_params params)
 {
     int crop_height = option_find_int(options, "crop_height",1);
     int crop_width = option_find_int(options, "crop_width",1);
@@ -382,7 +382,7 @@ crop_layer parse_crop(list *options, size_params params)
     return l;
 }
 
-layer parse_reorg(list *options, size_params params)
+layer parse_reorg(mlist *options, size_params params)
 {
     int stride = option_find_int(options, "stride",1);
     int reverse = option_find_int_quiet(options, "reverse",0);
@@ -400,7 +400,7 @@ layer parse_reorg(list *options, size_params params)
     return layer;
 }
 
-maxpool_layer parse_maxpool(list *options, size_params params)
+maxpool_layer parse_maxpool(mlist *options, size_params params)
 {
     int stride = option_find_int(options, "stride",1);
     int size = option_find_int(options, "size",stride);
@@ -417,7 +417,7 @@ maxpool_layer parse_maxpool(list *options, size_params params)
     return layer;
 }
 
-avgpool_layer parse_avgpool(list *options, size_params params)
+avgpool_layer parse_avgpool(mlist *options, size_params params)
 {
     int batch,w,h,c;
     w = params.w;
@@ -430,7 +430,7 @@ avgpool_layer parse_avgpool(list *options, size_params params)
     return layer;
 }
 
-dropout_layer parse_dropout(list *options, size_params params)
+dropout_layer parse_dropout(mlist *options, size_params params)
 {
     float probability = option_find_float(options, "probability", .5);
     dropout_layer layer = make_dropout_layer(params.batch, params.inputs, probability);
@@ -440,7 +440,7 @@ dropout_layer parse_dropout(list *options, size_params params)
     return layer;
 }
 
-layer parse_normalization(list *options, size_params params)
+layer parse_normalization(mlist *options, size_params params)
 {
     float alpha = option_find_float(options, "alpha", .0001);
     float beta =  option_find_float(options, "beta" , .75);
@@ -450,13 +450,13 @@ layer parse_normalization(list *options, size_params params)
     return l;
 }
 
-layer parse_batchnorm(list *options, size_params params)
+layer parse_batchnorm(mlist *options, size_params params)
 {
     layer l = make_batchnorm_layer(params.batch, params.w, params.h, params.c);
     return l;
 }
 
-layer parse_shortcut(list *options, size_params params, network net)
+layer parse_shortcut(mlist *options, size_params params, network net)
 {
     char *l = option_find(options, "from");
     int index = atoi(l);
@@ -474,7 +474,7 @@ layer parse_shortcut(list *options, size_params params, network net)
 }
 
 
-layer parse_activation(list *options, size_params params)
+layer parse_activation(mlist *options, size_params params)
 {
     char *activation_s = option_find_str(options, "activation", "linear");
     ACTIVATION activation = get_activation(activation_s);
@@ -491,7 +491,7 @@ layer parse_activation(list *options, size_params params)
     return l;
 }
 
-route_layer parse_route(list *options, size_params params, network net)
+route_layer parse_route(mlist *options, size_params params, network net)
 {
     char *l = option_find(options, "layers");
     int len = strlen(l);
@@ -545,7 +545,7 @@ learning_rate_policy get_policy(char *s)
     return CONSTANT;
 }
 
-void parse_net_options(list *options, network *net)
+void parse_net_options(mlist *options, network *net)
 {
     net->batch = option_find_int(options, "batch",1);
     net->learning_rate = option_find_float(options, "learning_rate", .001);
@@ -630,7 +630,7 @@ int is_network(section *s)
 
 network parse_network_cfg(char *filename)
 {
-    list *sections = read_cfg(filename);
+    mlist *sections = read_cfg(filename);
     node *n = sections->front;
     if(!n) error("Config file has no sections");
     network net = make_network(sections->size - 1);
@@ -638,7 +638,7 @@ network parse_network_cfg(char *filename)
     size_params params;
 
     section *s = (section *)n->val;
-    list *options = s->options;
+    mlist *options = s->options;
     if(!is_network(s)) error("First section must be [net] or [network]");
     parse_net_options(options, &net);
 
@@ -764,13 +764,13 @@ network parse_network_cfg(char *filename)
     return net;
 }
 
-list *read_cfg(char *filename)
+mlist *read_cfg(char *filename)
 {
     FILE *file = fopen(filename, "r");
     if(file == 0) file_error(filename);
     char *line;
     int nu = 0;
-    list *options = make_list();
+    mlist *options = make_list();
     section *current = 0;
     while((line=fgetl(file)) != 0){
         ++ nu;
