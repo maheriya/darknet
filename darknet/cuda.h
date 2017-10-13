@@ -3,7 +3,7 @@
 
 #include "darknet.h"
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void check_error(cudaError_t status);
 cublasHandle_t blas_handle();

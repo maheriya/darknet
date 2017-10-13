@@ -77,7 +77,7 @@ void reset_momentum(network net)
     net.learning_rate = 0;
     net.momentum = 0;
     net.decay = 0;
-    #ifdef GPU
+    #ifdef DNETGPU
         //if(net.gpu_index >= 0) update_network_gpu(net);
     #endif
 }
@@ -86,7 +86,7 @@ void reset_network_state(network net, int b)
 {
     int i;
     for (i = 0; i < net.n; ++i) {
-        #ifdef GPU
+        #ifdef DNETGPU
         layer l = net.layers[i];
         if(l.state_gpu){
             fill_gpu(l.outputs, 0, l.state_gpu + l.outputs*b, 1);
@@ -281,7 +281,7 @@ void backward_network(network net)
 
 float train_network_datum(network net)
 {
-#ifdef GPU
+#ifdef DNETGPU
     if(gpu_index >= 0) return train_network_datum_gpu(net);
 #endif
     *net.seen += net.batch;
@@ -353,7 +353,7 @@ void set_batch_network(network *net, int b)
 
 int resize_network(network *net, int w, int h)
 {
-#ifdef GPU
+#ifdef DNETGPU
     cuda_set_device(net->gpu_index);
     cuda_free(net->workspace);
 #endif
@@ -405,7 +405,7 @@ int resize_network(network *net, int w, int h)
     free(net->truth);
     net->input = calloc(net->inputs*net->batch, sizeof(float));
     net->truth = calloc(net->truths*net->batch, sizeof(float));
-#ifdef GPU
+#ifdef DNETGPU
     if(gpu_index >= 0){
         cuda_free(net->input_gpu);
         cuda_free(net->truth_gpu);
@@ -440,7 +440,7 @@ detection_layer get_network_detection_layer(network net)
 image get_network_image_layer(network net, int i)
 {
     layer l = net.layers[i];
-#ifdef GPU
+#ifdef DNETGPU
     //cuda_pull_array(l.output_gpu, l.output, l.outputs);
 #endif
     if (l.out_w && l.out_h && l.out_c){
@@ -483,7 +483,7 @@ void top_predictions(network net, int k, int *index)
 
 float *network_predict(network net, float *input)
 {
-#ifdef GPU
+#ifdef DNETGPU
     if(gpu_index >= 0)  return network_predict_gpu(net, input);
 #endif
     net.input = input;
@@ -677,7 +677,7 @@ void free_network(network net)
     free(net.layers);
     if(net.input) free(net.input);
     if(net.truth) free(net.truth);
-#ifdef GPU
+#ifdef DNETGPU
     if(net.input_gpu) cuda_free(net.input_gpu);
     if(net.truth_gpu) cuda_free(net.truth_gpu);
 #endif

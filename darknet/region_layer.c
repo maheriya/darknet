@@ -40,7 +40,7 @@ layer make_region_layer(int batch, int w, int h, int n, int classes, int coords)
 
     l.forward = forward_region_layer;
     l.backward = backward_region_layer;
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_region_layer_gpu;
     l.backward_gpu = backward_region_layer_gpu;
     l.output_gpu = cuda_make_array(l.output, batch*l.outputs);
@@ -64,7 +64,7 @@ void resize_region_layer(layer *l, int w, int h)
     l->output = realloc(l->output, l->batch*l->outputs*sizeof(float));
     l->delta = realloc(l->delta, l->batch*l->outputs*sizeof(float));
 
-#ifdef GPU
+#ifdef DNETGPU
     cuda_free(l->delta_gpu);
     cuda_free(l->output_gpu);
 
@@ -156,7 +156,7 @@ void forward_region_layer(const layer l, network net)
     int i,j,b,t,n;
     memcpy(l.output, net.input, l.outputs*l.batch*sizeof(float));
 
-#ifndef GPU
+#ifndef DNETGPU
     for (b = 0; b < l.batch; ++b){
         for(n = 0; n < l.n; ++n){
             int index = entry_index(l, b, n*l.w*l.h, 0);
@@ -450,7 +450,7 @@ void get_region_boxes(layer l, int w, int h, int netw, int neth, float thresh, f
     correct_region_boxes(boxes, l.w*l.h*l.n, w, h, netw, neth, relative);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void forward_region_layer_gpu(const layer l, network net)
 {

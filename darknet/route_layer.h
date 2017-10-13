@@ -10,7 +10,7 @@ void forward_route_layer(const route_layer l, network net);
 void backward_route_layer(const route_layer l, network net);
 void resize_route_layer(route_layer *l, network *net);
 
-#ifdef GPU
+#ifdef DNETGPU
 void forward_route_layer_gpu(const route_layer l, network net);
 void backward_route_layer_gpu(const route_layer l, network net);
 #endif

@@ -18,7 +18,7 @@ void swap_binary(convolutional_layer *l)
     l->weights = l->binary_weights;
     l->binary_weights = swap;
 
-#ifdef GPU
+#ifdef DNETGPU
     swap = l->weights_gpu;
     l->weights_gpu = l->binary_weights_gpu;
     l->binary_weights_gpu = swap;
@@ -118,7 +118,7 @@ static size_t get_workspace_size(layer l){
     return (size_t)l.out_h*l.out_w*l.size*l.size*l.c/l.groups*sizeof(float);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 #ifdef CUDNN
 void cudnn_convolutional_setup(layer *l)
 {
@@ -257,7 +257,7 @@ convolutional_layer make_convolutional_layer(int batch, int h, int w, int c, int
         l.scale_v = calloc(n, sizeof(float));
     }
 
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_convolutional_layer_gpu;
     l.backward_gpu = backward_convolutional_layer_gpu;
     l.update_gpu = update_convolutional_layer_gpu;
@@ -386,7 +386,7 @@ void resize_convolutional_layer(convolutional_layer *l, int w, int h)
         l->x_norm  = realloc(l->x_norm, l->batch*l->outputs*sizeof(float));
     }
 
-#ifdef GPU
+#ifdef DNETGPU
     cuda_free(l->delta_gpu);
     cuda_free(l->output_gpu);
 

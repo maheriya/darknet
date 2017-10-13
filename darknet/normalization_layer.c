@@ -25,7 +25,7 @@ layer make_normalization_layer(int batch, int w, int h, int c, int size, float a
 
     layer.forward = forward_normalization_layer;
     layer.backward = backward_normalization_layer;
-    #ifdef GPU
+    #ifdef DNETGPU
     layer.forward_gpu = forward_normalization_layer_gpu;
     layer.backward_gpu = backward_normalization_layer_gpu;
 
@@ -51,7 +51,7 @@ void resize_normalization_layer(layer *layer, int w, int h)
     layer->delta = realloc(layer->delta, h * w * c * batch * sizeof(float));
     layer->squared = realloc(layer->squared, h * w * c * batch * sizeof(float));
     layer->norms = realloc(layer->norms, h * w * c * batch * sizeof(float));
-#ifdef GPU
+#ifdef DNETGPU
     cuda_free(layer->output_gpu);
     cuda_free(layer->delta_gpu); 
     cuda_free(layer->squared_gpu); 
@@ -106,7 +106,7 @@ void backward_normalization_layer(const layer layer, network net)
     mul_cpu(w*h*c*layer.batch, layer.delta, 1, net.delta, 1);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 void forward_normalization_layer_gpu(const layer layer, network net)
 {
     int k,b;

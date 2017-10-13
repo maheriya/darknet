@@ -34,7 +34,7 @@ detection_layer make_detection_layer(int batch, int inputs, int n, int side, int
 
     l.forward = forward_detection_layer;
     l.backward = backward_detection_layer;
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_detection_layer_gpu;
     l.backward_gpu = backward_detection_layer_gpu;
     l.output_gpu = cuda_make_array(l.output, batch*l.outputs);
@@ -251,7 +251,7 @@ void get_detection_boxes(layer l, int w, int h, float thresh, float **probs, box
     }
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void forward_detection_layer_gpu(const detection_layer l, network net)
 {

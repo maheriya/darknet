@@ -18,7 +18,7 @@ static void increment_layer(layer *l, int steps)
     l->x += num;
     l->x_norm += num;
 
-#ifdef GPU
+#ifdef DNETGPU
     l->output_gpu += num;
     l->delta_gpu += num;
     l->x_gpu += num;
@@ -68,7 +68,7 @@ layer make_crnn_layer(int batch, int h, int w, int c, int hidden_filters, int ou
     l.backward = backward_crnn_layer;
     l.update = update_crnn_layer;
 
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_crnn_layer_gpu;
     l.backward_gpu = backward_crnn_layer_gpu;
     l.update_gpu = update_crnn_layer_gpu;
@@ -178,7 +178,7 @@ void backward_crnn_layer(layer l, network net)
     }
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void pull_crnn_layer(layer l)
 {

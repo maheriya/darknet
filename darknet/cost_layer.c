@@ -52,7 +52,7 @@ cost_layer make_cost_layer(int batch, int inputs, COST_TYPE cost_type, float sca
 
     l.forward = forward_cost_layer;
     l.backward = backward_cost_layer;
-    #ifdef GPU
+    #ifdef DNETGPU
     l.forward_gpu = forward_cost_layer_gpu;
     l.backward_gpu = backward_cost_layer_gpu;
 
@@ -68,7 +68,7 @@ void resize_cost_layer(cost_layer *l, int inputs)
     l->outputs = inputs;
     l->delta = realloc(l->delta, inputs*l->batch*sizeof(float));
     l->output = realloc(l->output, inputs*l->batch*sizeof(float));
-#ifdef GPU
+#ifdef DNETGPU
     cuda_free(l->delta_gpu);
     cuda_free(l->output_gpu);
     l->delta_gpu = cuda_make_array(l->delta, inputs*l->batch);
@@ -100,7 +100,7 @@ void backward_cost_layer(const cost_layer l, network net)
     axpy_cpu(l.batch*l.inputs, l.scale, l.delta, 1, net.delta, 1);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void pull_cost_layer(cost_layer l)
 {

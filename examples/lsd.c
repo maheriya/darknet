@@ -3,7 +3,7 @@
 /*
 void train_lsd3(char *fcfg, char *fweight, char *gcfg, char *gweight, char *acfg, char *aweight, int clear)
 {
-#ifdef GPU
+#ifdef DNETGPU
     //char *train_images = "/home/pjreddie/data/coco/trainvalno5k.txt";
     char *train_images = "/home/pjreddie/data/imagenet/imagenet1k.train.list";
     //char *style_images = "/home/pjreddie/data/coco/trainvalno5k.txt";
@@ -194,7 +194,7 @@ void train_lsd3(char *fcfg, char *fweight, char *gcfg, char *gweight, char *acfg
 /*
 void train_pix2pix(char *cfg, char *weight, char *acfg, char *aweight, int clear)
 {
-#ifdef GPU
+#ifdef DNETGPU
     //char *train_images = "/home/pjreddie/data/coco/train1.txt";
     //char *train_images = "/home/pjreddie/data/coco/trainvalno5k.txt";
     char *train_images = "/home/pjreddie/data/imagenet/imagenet1k.train.list";
@@ -437,7 +437,7 @@ void dcgan_batch(network gnet, network anet)
 
 void train_dcgan(char *cfg, char *weight, char *acfg, char *aweight, int clear, int display, char *train_images)
 {
-#ifdef GPU
+#ifdef DNETGPU
     //char *train_images = "/home/pjreddie/data/coco/train1.txt";
     //char *train_images = "/home/pjreddie/data/coco/trainvalno5k.txt";
     //char *train_images = "/home/pjreddie/data/imagenet/imagenet1k.train.list";
@@ -618,7 +618,7 @@ void train_dcgan(char *cfg, char *weight, char *acfg, char *aweight, int clear, 
 
 void train_colorizer(char *cfg, char *weight, char *acfg, char *aweight, int clear, int display)
 {
-#ifdef GPU
+#ifdef DNETGPU
     //char *train_images = "/home/pjreddie/data/coco/train1.txt";
     //char *train_images = "/home/pjreddie/data/coco/trainvalno5k.txt";
     char *train_images = "/home/pjreddie/data/imagenet/imagenet1k.train.list";
@@ -791,7 +791,7 @@ void train_colorizer(char *cfg, char *weight, char *acfg, char *aweight, int cle
 /*
 void train_lsd2(char *cfgfile, char *weightfile, char *acfgfile, char *aweightfile, int clear)
 {
-#ifdef GPU
+#ifdef DNETGPU
     char *train_images = "/home/pjreddie/data/coco/trainvalno5k.txt";
     char *backup_directory = "/home/pjreddie/backup/";
     srand(time(0));

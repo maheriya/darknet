@@ -87,7 +87,7 @@ layer make_deconvolutional_layer(int batch, int h, int w, int c, int n, int size
         l.scale_v = calloc(n, sizeof(float));
     }
 
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_deconvolutional_layer_gpu;
     l.backward_gpu = backward_deconvolutional_layer_gpu;
     l.update_gpu = update_deconvolutional_layer_gpu;
@@ -176,7 +176,7 @@ void resize_deconvolutional_layer(layer *l, int h, int w)
         l->x_norm  = realloc(l->x_norm, l->batch*l->outputs*sizeof(float));
     }
 
-#ifdef GPU
+#ifdef DNETGPU
     cuda_free(l->delta_gpu);
     cuda_free(l->output_gpu);
 

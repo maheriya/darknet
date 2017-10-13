@@ -18,7 +18,7 @@ static void increment_layer(layer *l, int steps)
     l->x += num;
     l->x_norm += num;
 
-#ifdef GPU
+#ifdef DNETGPU
     l->output_gpu += num;
     l->delta_gpu += num;
     l->x_gpu += num;
@@ -101,7 +101,7 @@ layer make_lstm_layer(int batch, int inputs, int outputs, int steps, int batch_n
     l.dc_cpu =          calloc(batch*outputs, sizeof(float));
     l.dh_cpu =          calloc(batch*outputs, sizeof(float));
 
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_lstm_layer_gpu;
     l.backward_gpu = backward_lstm_layer_gpu;
     l.update_gpu = update_lstm_layer_gpu;
@@ -382,7 +382,7 @@ void backward_lstm_layer(layer l, network state)
     }
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 void update_lstm_layer_gpu(layer l, update_args a)
 {
     update_connected_layer_gpu(*(l.wf), a);

@@ -42,7 +42,7 @@ void weighted_delta_cpu(float *a, float *b, float *s, float *da, float *db, floa
 void softmax(float *input, int n, float temp, int stride, float *output);
 void softmax_cpu(float *input, int n, int batch, int batch_offset, int groups, int group_offset, int stride, float temp, float *output);
 
-#ifdef GPU
+#ifdef DNETGPU
 #include "cuda.h"
 #include "tree.h"
 

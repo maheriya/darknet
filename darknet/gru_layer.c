@@ -18,7 +18,7 @@ static void increment_layer(layer *l, int steps)
     l->x += num;
     l->x_norm += num;
 
-#ifdef GPU
+#ifdef DNETGPU
     l->output_gpu += num;
     l->delta_gpu += num;
     l->x_gpu += num;
@@ -87,7 +87,7 @@ layer make_gru_layer(int batch, int inputs, int outputs, int steps, int batch_no
     l.backward = backward_gru_layer;
     l.update = update_gru_layer;
 
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_gru_layer_gpu;
     l.backward_gpu = backward_gru_layer_gpu;
     l.update_gpu = update_gru_layer_gpu;
@@ -205,7 +205,7 @@ void backward_gru_layer(layer l, network net)
 {
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void pull_gru_layer(layer l)
 {

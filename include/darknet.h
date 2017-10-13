@@ -1,6 +1,6 @@
 #ifndef DARKNET_API
 #define DARKNET_API
-#ifdef GPU
+#ifdef DNETGPU
     #define BLOCK 512
 
     #include "cuda_runtime.h"
@@ -317,7 +317,7 @@ struct layer{
 
     size_t workspace_size;
 
-#ifdef GPU
+#ifdef DNETGPU
     int *indexes_gpu;
 
     float *z_gpu;
@@ -467,7 +467,7 @@ typedef struct network{
     int index;
     float *cost;
 
-#ifdef GPU
+#ifdef DNETGPU
     float *input_gpu;
     float *truth_gpu;
     float *delta_gpu;
@@ -589,7 +589,7 @@ void scal_cpu(int N, float ALPHA, float *X, int INCX);
 void normalize_cpu(float *x, float *mean, float *variance, int batch, int filters, int spatial);
 
 int best_3d_shift_r(image a, image b, int min, int max);
-#ifdef GPU
+#ifdef DNETGPU
 void axpy_gpu(int N, float ALPHA, float * X, int INCX, float * Y, int INCY);
 void fill_gpu(int N, float ALPHA, float * X, int INCX);
 void scal_gpu(int N, float ALPHA, float * X, int INCX);

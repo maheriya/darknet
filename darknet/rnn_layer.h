@@ -13,7 +13,7 @@ void forward_rnn_layer(layer l, network net);
 void backward_rnn_layer(layer l, network net);
 void update_rnn_layer(layer l, update_args a);
 
-#ifdef GPU
+#ifdef DNETGPU
 void forward_rnn_layer_gpu(layer l, network net);
 void backward_rnn_layer_gpu(layer l, network net);
 void update_rnn_layer_gpu(layer l, update_args a);

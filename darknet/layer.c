@@ -7,7 +7,7 @@ void free_layer(layer l)
 {
     if(l.type == DROPOUT){
         if(l.rand)           free(l.rand);
-#ifdef GPU
+#ifdef DNETGPU
         if(l.rand_gpu)             cuda_free(l.rand_gpu);
 #endif
         return;
@@ -53,7 +53,7 @@ void free_layer(layer l)
     if(l.h_cpu)              free(l.h_cpu);
     if(l.binary_input)       free(l.binary_input);
 
-#ifdef GPU
+#ifdef DNETGPU
     if(l.indexes_gpu)           cuda_free((float *)l.indexes_gpu);
 
     if(l.z_gpu)                   cuda_free(l.z_gpu);

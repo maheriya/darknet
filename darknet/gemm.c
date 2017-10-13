@@ -165,7 +165,7 @@ void gemm_cpu(int TA, int TB, int M, int N, int K, float ALPHA,
         gemm_tt(M, N, K, ALPHA,A,lda, B, ldb,C,ldc);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 #include <math.h>
 

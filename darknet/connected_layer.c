@@ -79,7 +79,7 @@ layer make_connected_layer(int batch, int inputs, int outputs, ACTIVATION activa
         l.x_norm = calloc(batch*outputs, sizeof(float));
     }
 
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_connected_layer_gpu;
     l.backward_gpu = backward_connected_layer_gpu;
     l.update_gpu = update_connected_layer_gpu;
@@ -230,7 +230,7 @@ void statistics_connected_layer(layer l)
     print_statistics(l.weights, l.outputs);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void pull_connected_layer(layer l)
 {

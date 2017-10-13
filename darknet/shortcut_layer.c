@@ -28,7 +28,7 @@ layer make_shortcut_layer(int batch, int index, int w, int h, int c, int w2, int
 
     l.forward = forward_shortcut_layer;
     l.backward = backward_shortcut_layer;
-    #ifdef GPU
+    #ifdef DNETGPU
     l.forward_gpu = forward_shortcut_layer_gpu;
     l.backward_gpu = backward_shortcut_layer_gpu;
 
@@ -52,7 +52,7 @@ void backward_shortcut_layer(const layer l, network net)
     shortcut_cpu(l.batch, l.out_w, l.out_h, l.out_c, l.delta, l.w, l.h, l.c, net.layers[l.index].delta);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 void forward_shortcut_layer_gpu(const layer l, network net)
 {
     copy_gpu(l.outputs*l.batch, net.input_gpu, 1, l.output_gpu, 1);

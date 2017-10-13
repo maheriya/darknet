@@ -425,7 +425,7 @@ int main(int argc, char **argv)
         gpu_index = -1;
     }
 
-#ifndef GPU
+#ifndef DNETGPU
     gpu_index = -1;
 #else
     if(gpu_index >= 0){

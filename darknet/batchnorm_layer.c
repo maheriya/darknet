@@ -34,7 +34,7 @@ layer make_batchnorm_layer(int batch, int w, int h, int c)
 
     l.forward = forward_batchnorm_layer;
     l.backward = backward_batchnorm_layer;
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_batchnorm_layer_gpu;
     l.backward_gpu = backward_batchnorm_layer_gpu;
 
@@ -171,7 +171,7 @@ void backward_batchnorm_layer(layer l, network net)
     if(l.type == BATCHNORM) copy_cpu(l.outputs*l.batch, l.delta, 1, net.delta, 1);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void pull_batchnorm_layer(layer l)
 {

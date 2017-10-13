@@ -130,7 +130,7 @@ void train_go(char *cfgfile, char *weightfile, char *filename, int *gpus, int ng
     int seed = rand();
     for(i = 0; i < ngpus; ++i){
         srand(seed);
-#ifdef GPU
+#ifdef DNETGPU
         cuda_set_device(gpus[i]);
 #endif
         nets[i] = load_network(cfgfile, weightfile, clear);
@@ -156,7 +156,7 @@ void train_go(char *cfgfile, char *weightfile, char *filename, int *gpus, int ng
         time=clock();
 
         float loss = 0;
-#ifdef GPU
+#ifdef DNETGPU
         if(ngpus == 1){
             loss = train_network(net, train);
         } else {

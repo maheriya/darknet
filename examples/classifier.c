@@ -29,7 +29,7 @@ void train_classifier(char *datacfg, char *cfgfile, char *weightfile, int *gpus,
     int seed = rand();
     for(i = 0; i < ngpus; ++i){
         srand(seed);
-#ifdef GPU
+#ifdef DNETGPU
         cuda_set_device(gpus[i]);
 #endif
         nets[i] = load_network(cfgfile, weightfile, clear);
@@ -95,7 +95,7 @@ void train_classifier(char *datacfg, char *cfgfile, char *weightfile, int *gpus,
         time = what_time_is_it_now();
 
         float loss = 0;
-#ifdef GPU
+#ifdef DNETGPU
         if(ngpus == 1){
             loss = train_network(net, train);
         } else {
@@ -620,7 +620,7 @@ void try_classifier(char *datacfg, char *cfgfile, char *weightfile, char *filena
         for(i = 0; i < l.c; ++i){
             if(l.rolling_mean) printf("%f %f %f\n", l.rolling_mean[i], l.rolling_variance[i], l.scales[i]);
         }
-#ifdef GPU
+#ifdef DNETGPU
         cuda_pull_array(l.output_gpu, l.output, l.outputs);
 #endif
         for(i = 0; i < l.outputs; ++i){

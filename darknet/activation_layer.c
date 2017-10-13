@@ -23,7 +23,7 @@ layer make_activation_layer(int batch, int inputs, ACTIVATION activation)
 
     l.forward = forward_activation_layer;
     l.backward = backward_activation_layer;
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_activation_layer_gpu;
     l.backward_gpu = backward_activation_layer_gpu;
 
@@ -47,7 +47,7 @@ void backward_activation_layer(layer l, network net)
     copy_cpu(l.outputs*l.batch, l.delta, 1, net.delta, 1);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void forward_activation_layer_gpu(layer l, network net)
 {

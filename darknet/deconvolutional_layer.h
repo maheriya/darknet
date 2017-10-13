@@ -7,7 +7,7 @@
 #include "layer.h"
 #include "network.h"
 
-#ifdef GPU
+#ifdef DNETGPU
 void forward_deconvolutional_layer_gpu(layer l, network net);
 void backward_deconvolutional_layer_gpu(layer l, network net);
 void update_deconvolutional_layer_gpu(layer l, update_args a);

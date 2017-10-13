@@ -40,7 +40,7 @@ maxpool_layer make_maxpool_layer(int batch, int h, int w, int c, int size, int s
     l.delta =   calloc(output_size, sizeof(float));
     l.forward = forward_maxpool_layer;
     l.backward = backward_maxpool_layer;
-    #ifdef GPU
+    #ifdef DNETGPU
     l.forward_gpu = forward_maxpool_layer_gpu;
     l.backward_gpu = backward_maxpool_layer_gpu;
     l.indexes_gpu = cuda_make_int_array(0, output_size);
@@ -66,7 +66,7 @@ void resize_maxpool_layer(maxpool_layer *l, int w, int h)
     l->output = realloc(l->output, output_size * sizeof(float));
     l->delta = realloc(l->delta, output_size * sizeof(float));
 
-    #ifdef GPU
+    #ifdef DNETGPU
     cuda_free((float *)l->indexes_gpu);
     cuda_free(l->output_gpu);
     cuda_free(l->delta_gpu);

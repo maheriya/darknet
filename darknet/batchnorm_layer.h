@@ -9,7 +9,7 @@ layer make_batchnorm_layer(int batch, int w, int h, int c);
 void forward_batchnorm_layer(layer l, network net);
 void backward_batchnorm_layer(layer l, network net);
 
-#ifdef GPU
+#ifdef DNETGPU
 void forward_batchnorm_layer_gpu(layer l, network net);
 void backward_batchnorm_layer_gpu(layer l, network net);
 void pull_batchnorm_layer(layer l);

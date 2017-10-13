@@ -36,7 +36,7 @@ crop_layer make_crop_layer(int batch, int h, int w, int c, int crop_height, int 
     l.forward = forward_crop_layer;
     l.backward = backward_crop_layer;
 
-    #ifdef GPU
+    #ifdef DNETGPU
     l.forward_gpu = forward_crop_layer_gpu;
     l.backward_gpu = backward_crop_layer_gpu;
     l.output_gpu = cuda_make_array(l.output, l.outputs*batch);
@@ -57,7 +57,7 @@ void resize_crop_layer(layer *l, int w, int h)
     l->outputs = l->out_h * l->out_w * l->out_c;
 
     l->output = realloc(l->output, l->batch*l->outputs*sizeof(float));
-    #ifdef GPU
+    #ifdef DNETGPU
     cuda_free(l->output_gpu);
     l->output_gpu = cuda_make_array(l->output, l->outputs*l->batch);
     #endif

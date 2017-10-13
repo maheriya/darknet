@@ -9,7 +9,7 @@
 
 typedef layer local_layer;
 
-#ifdef GPU
+#ifdef DNETGPU
 void forward_local_layer_gpu(local_layer layer, network net);
 void backward_local_layer_gpu(local_layer layer, network net);
 void update_local_layer_gpu(local_layer layer, update_args a);

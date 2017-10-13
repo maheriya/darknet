@@ -1,6 +1,6 @@
 int gpu_index = 0;
 
-#ifdef GPU
+#ifdef DNETGPU
 
 #include "cuda.h"
 #include "utils.h"

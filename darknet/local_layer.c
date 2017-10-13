@@ -66,7 +66,7 @@ local_layer make_local_layer(int batch, int h, int w, int c, int n, int size, in
     l.backward = backward_local_layer;
     l.update = update_local_layer;
 
-#ifdef GPU
+#ifdef DNETGPU
     l.forward_gpu = forward_local_layer_gpu;
     l.backward_gpu = backward_local_layer_gpu;
     l.update_gpu = update_local_layer_gpu;
@@ -181,7 +181,7 @@ void update_local_layer(local_layer l, update_args a)
     scal_cpu(size, momentum, l.weight_updates, 1);
 }
 
-#ifdef GPU
+#ifdef DNETGPU
 
 void forward_local_layer_gpu(const local_layer l, network net)
 {
