@@ -84,7 +84,7 @@ image get_convolutional_delta(convolutional_layer l)
 }
 
 static size_t get_workspace_size(layer l){
-#ifdef CUDNN
+#ifdef DNETCUDNN
     if(gpu_index >= 0){
         size_t most = 0;
         size_t s = 0;
@@ -119,7 +119,7 @@ static size_t get_workspace_size(layer l){
 }
 
 #ifdef DNETGPU
-#ifdef CUDNN
+#ifdef DNETCUDNN
 void cudnn_convolutional_setup(layer *l)
 {
     cudnnSetTensor4dDescriptor(l->dsrcTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, l->batch, l->c, l->h, l->w); 
@@ -305,7 +305,7 @@ convolutional_layer make_convolutional_layer(int batch, int h, int w, int c, int
             l.x_gpu = cuda_make_array(l.output, l.batch*out_h*out_w*n);
             l.x_norm_gpu = cuda_make_array(l.output, l.batch*out_h*out_w*n);
         }
-#ifdef CUDNN
+#ifdef DNETCUDNN
         cudnnCreateTensorDescriptor(&l.normTensorDesc);
         cudnnCreateTensorDescriptor(&l.srcTensorDesc);
         cudnnCreateTensorDescriptor(&l.dstTensorDesc);
@@ -400,7 +400,7 @@ void resize_convolutional_layer(convolutional_layer *l, int w, int h)
         l->x_gpu = cuda_make_array(l->output, l->batch*l->outputs);
         l->x_norm_gpu = cuda_make_array(l->output, l->batch*l->outputs);
     }
-#ifdef CUDNN
+#ifdef DNETCUDNN
     cudnn_convolutional_setup(l);
 #endif
 #endif

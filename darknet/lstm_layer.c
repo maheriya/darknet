@@ -124,7 +124,7 @@ layer make_lstm_layer(int batch, int inputs, int outputs, int steps, int batch_n
     l.temp3_gpu = cuda_make_array(0, batch*outputs);
     l.dc_gpu = cuda_make_array(0, batch*outputs);
     l.dh_gpu = cuda_make_array(0, batch*outputs);
-#ifdef CUDNN
+#ifdef DNETCUDNN
         cudnnSetTensor4dDescriptor(l.wf->dstTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, batch, l.wf->out_c, l.wf->out_h, l.wf->out_w); 
         cudnnSetTensor4dDescriptor(l.wi->dstTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, batch, l.wi->out_c, l.wi->out_h, l.wi->out_w); 
         cudnnSetTensor4dDescriptor(l.wg->dstTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, batch, l.wg->out_c, l.wg->out_h, l.wg->out_w); 

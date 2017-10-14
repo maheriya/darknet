@@ -7,7 +7,7 @@
     #include "curand.h"
     #include "cublas_v2.h"
 
-    #ifdef CUDNN
+    #ifdef DNETCUDNN
     #include "cudnn.h"
     #endif
 #endif
@@ -392,7 +392,7 @@ struct layer{
     float * rand_gpu;
     float * squared_gpu;
     float * norms_gpu;
-#ifdef CUDNN
+#ifdef DNETCUDNN
     cudnnTensorDescriptor_t srcTensorDesc, dstTensorDesc;
     cudnnTensorDescriptor_t dsrcTensorDesc, ddstTensorDesc;
     cudnnTensorDescriptor_t normTensorDesc;

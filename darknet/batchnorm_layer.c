@@ -58,7 +58,7 @@ layer make_batchnorm_layer(int batch, int w, int h, int c)
 
     l.x_gpu = cuda_make_array(l.output, l.batch*l.outputs);
     l.x_norm_gpu = cuda_make_array(l.output, l.batch*l.outputs);
-    #ifdef CUDNN
+    #ifdef DNETCUDNN
     cudnnCreateTensorDescriptor(&l.normTensorDesc);
     cudnnCreateTensorDescriptor(&l.dstTensorDesc);
     cudnnSetTensor4dDescriptor(l.dstTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, l.batch, l.out_c, l.out_h, l.out_w); 
@@ -191,7 +191,7 @@ void forward_batchnorm_layer_gpu(layer l, network net)
     if(l.type == BATCHNORM) copy_gpu(l.outputs*l.batch, net.input_gpu, 1, l.output_gpu, 1);
     copy_gpu(l.outputs*l.batch, l.output_gpu, 1, l.x_gpu, 1);
     if (net.train) {
-#ifdef CUDNN
+#ifdef DNETCUDNN
         float one = 1;
         float zero = 0;
         cudnnBatchNormalizationForwardTraining(cudnn_handle(),
@@ -241,7 +241,7 @@ void backward_batchnorm_layer_gpu(layer l, network net)
         l.mean_gpu = l.rolling_mean_gpu;
         l.variance_gpu = l.rolling_variance_gpu;
     }
-#ifdef CUDNN
+#ifdef DNETCUDNN
     float one = 1;
     float zero = 0;
     cudnnBatchNormalizationBackward(cudnn_handle(),

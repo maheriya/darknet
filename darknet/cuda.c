@@ -61,7 +61,7 @@ dim3 cuda_gridsize(size_t n){
     return d;
 }
 
-#ifdef CUDNN
+#ifdef DNETCUDNN
 cudnnHandle_t cudnn_handle()
 {
     static int init[16] = {0};

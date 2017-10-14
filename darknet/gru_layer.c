@@ -102,7 +102,7 @@ layer make_gru_layer(int batch, int inputs, int outputs, int steps, int batch_no
     l.z_gpu = cuda_make_array(0, batch*outputs);
     l.h_gpu = cuda_make_array(0, batch*outputs);
 
-#ifdef CUDNN
+#ifdef DNETCUDNN
     cudnnSetTensor4dDescriptor(l.uz->dstTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, batch, l.uz->out_c, l.uz->out_h, l.uz->out_w); 
     cudnnSetTensor4dDescriptor(l.uh->dstTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, batch, l.uh->out_c, l.uh->out_h, l.uh->out_w); 
     cudnnSetTensor4dDescriptor(l.ur->dstTensorDesc, CUDNN_TENSOR_NCHW, CUDNN_DATA_FLOAT, batch, l.ur->out_c, l.ur->out_h, l.ur->out_w); 

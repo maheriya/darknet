@@ -1,5 +1,5 @@
 DNETGPU=1
-CUDNN=1
+DNETCUDNN=1
 OPENCV=1
 OPENMP=1
 DEBUG=0
@@ -53,9 +53,9 @@ CFLAGS+= -DDNETGPU
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 
-ifeq ($(CUDNN), 1) 
-COMMON+= -DCUDNN 
-CFLAGS+= -DCUDNN
+ifeq ($(DNETCUDNN), 1) 
+COMMON+= -DDNETCUDNN 
+CFLAGS+= -DDNETCUDNN
 LDFLAGS+= -lcudnn
 endif
 
