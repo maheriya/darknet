@@ -1,0 +1,3 @@
+./darknet detector demo cfg/voc.data cfg/yolo-voc.cfg yolo-voc.weights ~/Downloads/GenFB.wheelchair_on_stair.mp4
+
+./darknet detector -thresh 0.7 -s 2 demo cfg/voc.data cfg/yolo-voc.cfg yolo-voc.weights ~/Downloads/GenFB.wheelchair_on_stair.mp4

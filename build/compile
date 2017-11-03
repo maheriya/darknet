@@ -16,21 +16,24 @@ else
 endif
 
 CMAKE:
-set cmd = ( cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/darknet "$extraopts" .. )
+set cmd = ( cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local "$extraopts" .. )
+##set cmd = ( cmake -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_PREFIX=/usr/local/darknet "$extraopts" .. )
 echo $cmd
 $cmd
 chkst
 
+##exit
 MAKE:
 make -j4
 chkst
 
-
+##exit
 INSTALL:
-##--sudo make install
 sudo checkinstall --nodoc --strip=yes --backup=no \
-        --fstrans=no \
+        --install=yes \
+        --fstrans=yes \
         --default \
         --pkgname=darknet \
+        --pkgversion=2.0
 
 

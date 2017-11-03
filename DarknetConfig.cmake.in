@@ -15,4 +15,4 @@ include("${DARKNET_CMAKE_DIR}/DarknetTargets.cmake")
 
 # These are IMPORTED targets created by DarknetTargets.cmake
 set(DARKNET_LIBRARIES "@CONF_LIBNAME@")
-set(DARKNET_EXECUTABLE examples)
+set(DARKNET_EXECUTABLE darknet)
