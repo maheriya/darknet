@@ -1,0 +1,24 @@
+#!/bin/csh -f
+#
+# Runs detector to calculate recall on all images in test.txt
+if ($#argv == 0) then
+  set backup = "backup-2018-02-03"
+else
+  set backup = "$argv[1]"
+endif
+echo "Backup directory: $backup"
+darknet detector recall cfg/dvia.data cfg/yolo-voc.cfg $backup/yolo-voc_final.weights |& tee dvia_recall.txt
+
+
+## Output will be in following format:
+## id
+## |     Correct detections (accumulated)
+## |     |       Total detections
+## |     |       |      Proposals per image
+## |     |       |      |               Ave IOU (running average)
+## |     |       |      |               |               Ave Recall (running average)
+## 3999  8157   10283	RPs/Img: 75.46	IOU: 66.31%	Recall: 79.33%
+set last = `tail -n1 dvia_recall.txt`
+set recall = `echo $last | awk '{print $9}'`
+set iou = `echo $last | awk '{print $7}'`
+echo "Average recall = $recall, average IOU = $iou"

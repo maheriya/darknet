@@ -1,0 +1,6 @@
+#!/bin/csh -f
+#
+# Runs validation using test.txt and saves results in dvia*.txt files
+set backup = "backup-2018-02-03"
+set out    = "dvia-"
+darknet detector valid cfg/dvia.data cfg/yolo-voc.cfg $backup/yolo-voc_final.weights -out $out

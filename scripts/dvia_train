@@ -1,0 +1,5 @@
+#!/bin/csh -f
+
+if (! -d backup) mkdir backup
+echo "Training DVIA+YOLO darknet ==================="
+darknet detector train cfg/dvia.data cfg/yolo-voc.cfg data/darknet19_448.conv.23 |& tee dvia_training.log
