@@ -7,18 +7,28 @@ else
   set backup = "$argv[1]"
 endif
 echo "Backup directory: $backup"
-darknet detector recall cfg/dvia.data cfg/yolo-voc.cfg $backup/yolo-voc_final.weights |& tee dvia_recall.txt
+cd $backup
+set weights = ( `/bin/ls yolo-voc_?00.weights | sort` )             ## 100s
+set weights = ( $weights `/bin/ls yolo-voc_?0000*.weights | sort` ) ## 10k or more
+set weights = ( $weights `/bin/ls yolo-voc_final.weights` )         ## final
+cd -
+echo "Output will be in the following format"
+echo "Snapshot,		IOU,	Recall"
+/bin/rm -f /tmp/dvia_recall* >& /dev/null
+foreach weight ( $weights )
+  set out = "/tmp/dvia_recall_${weight}.txt"
+  darknet detector recall cfg/dvia.data cfg/yolo-voc.cfg $backup/$weight >& $out
 
-
-## Output will be in following format:
-## id
-## |     Correct detections (accumulated)
-## |     |       Total detections
-## |     |       |      Proposals per image
-## |     |       |      |               Ave IOU (running average)
-## |     |       |      |               |               Ave Recall (running average)
-## 3999  8157   10283	RPs/Img: 75.46	IOU: 66.31%	Recall: 79.33%
-set last = `tail -n1 dvia_recall.txt`
-set recall = `echo $last | awk '{print $9}'`
-set iou = `echo $last | awk '{print $7}'`
-echo "Average recall = $recall, average IOU = $iou"
+  ## Output will be in following format:
+  ## id
+  ## |     Correct detections (accumulated)
+  ## |     |       Total detections
+  ## |     |       |      Proposals per image
+  ## |     |       |      |               Ave IOU (running average)
+  ## |     |       |      |               |               Ave Recall (running average)
+  ## 3999  8157   10283	RPs/Img: 75.46	IOU: 66.31%	Recall: 79.33%
+  set last = `tail -n1 $out`
+  set iou = `echo $last | awk '{print $7}'`
+  set recall = `echo $last | awk '{print $9}'`
+  echo "$weight,	$iou,	$recall"
+end

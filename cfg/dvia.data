@@ -1,0 +1,7 @@
+classes= 20
+train  = lists/train.txt
+valid  = lists/test.txt
+names = data/dvia.names
+backup = backup
+results = results
+
