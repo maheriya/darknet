@@ -1,5 +1,5 @@
 #!/bin/csh -f
-./clean
+##./clean
 
 alias chkst 'if ($status != 0) then \
   echo "Failure!"; \
